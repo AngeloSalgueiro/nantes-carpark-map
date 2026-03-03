@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         data.forEach((element) => {
             const marker = L.marker([element.location.lat, element.location.lon]).addTo(map);
 
-            marker.bindPopup(element.nom).openPopup();
+            marker.bindPopup("<h3>" + element.nom + "</h3>" + "<br>" + element.adresse).openPopup();
 
         });
 
