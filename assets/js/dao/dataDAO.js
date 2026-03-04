@@ -1,30 +1,27 @@
 "use strict"
-const limit = 100
-const url = "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/512042839_composteurs-quartier-nantes-metropole/records?limit=" + limit
+import { data } from "../data/data.js"
 
 export const dataDAO = {
 
-    findAll : async () => {
+    findAll: async () => {
         try {
-            const reponse = await fetch(url)
-            const result = await reponse.json()
-
-            const count = result.total_count / limit
-            let data = result.results
-            for (let i = 1; i < count; i += 1) {
-                const reponse = await fetch(url + "&offset=" + i * limit)
-                console.log(url + "&offset=" + i * limit)
-                if (!reponse.ok) {
-                    throw new Error(`Statut de réponse : ${reponse.status}`);
-                }
-
-                const result = await reponse.json();
-            }
-            
-            return data
-
+            return await data()
         } catch (error) {
             throw error
         }
-    }
+    },
+
+    find: async (name) => {
+        try {
+            if (!name || name == "") {
+                return dataDAO.findAll()
+            }
+
+            const result = await data()
+
+            return result.filter((e) => e.nom.toUpperCase().includes(name.trim().toUpperCase()))
+        } catch (error) {
+            throw error
+        }
+    },
 }
